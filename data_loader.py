@@ -20,8 +20,8 @@ class NewsSummaryDataset(Dataset):
         self.source = []
         self.target = []
 
-        src_path = self.data + '.src'
-        trg_path = self.data + 'trg'
+        src_path = self.data + '.src.csv'
+        trg_path = self.data + '.trg.csv'
 
         with open(src_path, 'r', encoding='utf-8') as src_file, open(src_path, 'r', encoding='utf-8') as trg_file:
             rdr_src = csv.reader(src_file)
@@ -29,6 +29,11 @@ class NewsSummaryDataset(Dataset):
             for src_line, trg_line in zip(rdr_src, rdr_trg):
                 self.source.append(src_line)
                 self.target.append(trg_line)
+
+            print('source dataset 1, ')
+            print(self.source[1])
+            print('target dataset 1, ')
+            print(self.target[1])
 
     def __len__(self):
         return len(self.data)
