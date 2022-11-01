@@ -2,6 +2,9 @@ from torch.utils.data import DataLoader, Dataset
 import pytorch_lightning as pl
 from transformers import PegasusTokenizer
 import csv
+import sys
+
+csv.field_size_limit(sys.maxsize)
 
 
 class NewsSummaryDataset(Dataset):
