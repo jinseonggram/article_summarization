@@ -72,8 +72,7 @@ class NewsSummaryDataset(Dataset):
         )
 
 
-class NewsSummaryDataModule(pl.LightningModule):
-
+class NewsSummaryDataModule(pl.LightningDataModule):
     def __init__(
             self,
             train,
@@ -94,6 +93,7 @@ class NewsSummaryDataModule(pl.LightningModule):
         self.summary_max_token_len = summary_max_token_len
 
     def setup(self, stage=None):
+
         self.train_dataset = NewsSummaryDataset(
             self.train,
             self.tokenizer,

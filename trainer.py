@@ -3,7 +3,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 
 
-class Trainer:
+class MyTrainer:
     def __init__(self, config):
         self.config = config
         self.checkpoint_callback = ModelCheckpoint(

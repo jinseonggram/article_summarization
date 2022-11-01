@@ -1,7 +1,7 @@
 import argparse
 from model import NewsSummaryModel
 from data_loader import NewsSummaryDataModule
-from trainer import Trainer
+from trainer import MyTrainer
 import pprint
 
 def define_argparser(is_continue=False):
@@ -98,7 +98,7 @@ def main(config):
 
     data_module = NewsSummaryDataModule(config.train, config.valid, config.model_name, batch_size=config.batch_size, text_max_token_len=config.max_length)
     model = get_model(model=config.model_name, lr=config.lr)
-    trainer = Trainer(config)
+    trainer = MyTrainer(config)
     trainer.train(model, data_module)
     # save_model(pl_trainer)
 
