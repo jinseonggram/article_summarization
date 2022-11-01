@@ -7,10 +7,9 @@ import pytorch_lightning as pl
 
 class NewsSummaryModel(pl.LightningModule):
 
-    def __init__(self, model, lr):
+    def __init__(self, model):
         super().__init__()
         self.model = BigBirdPegasusForConditionalGeneration.from_pretrained(model, return_dict=True)
-        self.lr = lr
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
 
@@ -72,4 +71,4 @@ class NewsSummaryModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return AdamW(self.parameters(), lr=self.lr)
+        return AdamW(self.parameters(), lr=0.0001)
