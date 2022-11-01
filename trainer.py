@@ -23,5 +23,6 @@ class MyTrainer:
             gpus=1,
             max_epochs=self.config.n_epochs,
         )
+        print('----- start training -----')
         trainer.fit(model, data_module)
         # return trainer
