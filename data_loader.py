@@ -42,7 +42,8 @@ class NewsSummaryDataset(Dataset):
         #     print(self.target[1])
 
     def __len__(self):
-        return len(self.data)
+        # return len(self.data)
+        return len(self.source)
 
     def __getitem__(self, index: int):
         text_encoding = self.tokenizer(
