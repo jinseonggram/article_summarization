@@ -118,8 +118,9 @@ class NewsSummaryDataModule(pl.LightningDataModule):
         self.X_test = X_test
         self.y_test = y_test
 
-        print(self.X_train[1])
-        print(self.y_train[1])
+        print('--data set --')
+        print(len(self.X_train))
+        print(len(self.y_train))
 
 
     def setup(self, stage=None):
