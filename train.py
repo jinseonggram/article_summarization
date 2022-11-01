@@ -83,7 +83,7 @@ def define_argparser(is_continue=False):
 
 
 def get_model(model, lr):
-    model = NewsSummaryModel(model=model, lr=lr)
+    model = NewsSummaryModel(model=model)
     return model
 
 
