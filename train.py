@@ -82,7 +82,7 @@ def define_argparser(is_continue=False):
     return config
 
 
-def get_model(model, lr):
+def get_model(model):
     model = NewsSummaryModel(model=model)
     return model
 
