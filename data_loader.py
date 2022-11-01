@@ -26,7 +26,7 @@ class NewsSummaryDataset(Dataset):
         src_path = self.data + '.src.csv'
         trg_path = self.data + '.trg.csv'
 
-        with open(src_path, 'r', encoding='utf-8') as src_file, open(src_path, 'r', encoding='utf-8') as trg_file:
+        with open(src_path, 'r', encoding='utf-8') as src_file, open(trg_path, 'r', encoding='utf-8') as trg_file:
             rdr_src = csv.reader(src_file)
             rdr_trg = csv.reader(trg_path)
             for src_line, trg_line in zip(rdr_src, rdr_trg):
