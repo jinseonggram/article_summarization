@@ -35,7 +35,7 @@ class NewsSummaryModel(pl.LightningModule):
             decoder_attention_mask=labels_attention_mask,
             labels=labels
         )
-
+        print('loss - ', loss)
         self.log('train_loss', loss, prog_bar=True, logger=True)
         return loss
 
