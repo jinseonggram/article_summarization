@@ -22,8 +22,9 @@ class MyTrainer:
             logger=self.logger,
             # callbacks=[self.checkpoint_callback, TQDMProgressBar(refresh_rate=10)],
             callbacks=[self.checkpoint_callback],
-            accelerator='gpu',
-            devices=1,
+            # accelerator='gpu',
+            # devices=1,
+            gpus=1,
             max_epochs=self.config.n_epochs,
             num_sanity_val_steps=0
         )
