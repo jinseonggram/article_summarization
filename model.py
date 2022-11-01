@@ -5,7 +5,7 @@ from transformers import (
 import pytorch_lightning as pl
 
 
-class NewsSummaryModel(pl.LightningDataModule):
+class NewsSummaryModel(pl.LightningModule):
 
     def __init__(self, model, lr):
         super().__init__()
