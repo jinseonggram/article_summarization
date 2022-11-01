@@ -19,15 +19,19 @@ def define_argparser(is_continue=False):
         required=not is_continue,
         help='Model file name to save. Additional information would be annotated to the file name.'
     )
+    # p.add_argument(
+    #     '--train',
+    #     required=not is_continue,
+    #     help='Training set file name except the extention. (ex: train.en --> train)'
+    # )
+    # p.add_argument(
+    #     '--valid',
+    #     required=not is_continue,
+    #     help='Validation set file name except the extention. (ex: valid.en --> valid)'
+    # )
     p.add_argument(
-        '--train',
-        required=not is_continue,
-        help='Training set file name except the extention. (ex: train.en --> train)'
-    )
-    p.add_argument(
-        '--valid',
-        required=not is_continue,
-        help='Validation set file name except the extention. (ex: valid.en --> valid)'
+        '--path',
+        required=True
     )
     p.add_argument(
         '--gpu_id',
@@ -96,7 +100,8 @@ def main(config):
         pp.pprint(vars(config))
     print_config(config)
 
-    data_module = NewsSummaryDataModule(config.train, config.valid, config.model_name, batch_size=config.batch_size, text_max_token_len=config.max_length)
+    # data_module = NewsSummaryDataModule(config.train, config.valid, config.model_name, batch_size=config.batch_size, text_max_token_len=config.max_length)
+    data_module = NewsSummaryDataModule(config.path, config.model_name, batch_size=config.batch_size, text_max_token_len=config.max_length)
     model = get_model(model=config.model_name, lr=config.lr)
     trainer = MyTrainer(config)
     trainer.train(model, data_module)

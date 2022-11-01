@@ -3,6 +3,7 @@ import pytorch_lightning as pl
 from transformers import PegasusTokenizer
 import csv
 import sys
+from sklearn.model_selection import train_test_split
 
 csv.field_size_limit(sys.maxsize)
 
@@ -10,33 +11,35 @@ csv.field_size_limit(sys.maxsize)
 class NewsSummaryDataset(Dataset):
     def __init__(
             self,
-            data,
+            # data,
+            source,
+            target,
             tokenizer: PegasusTokenizer,
             text_max_token_len: int = 512,
             summary_max_token_len: int = 128
     ):
-        self.data = data
+        # self.data = data
         self.tokenizer = tokenizer
         self.text_max_token_len = text_max_token_len
         self.summary_max_token_len = summary_max_token_len
 
-        self.source = []
-        self.target = []
+        self.source = source
+        self.target = target
 
-        src_path = self.data + '.src.csv'
-        trg_path = self.data + '.trg.csv'
-
-        with open(src_path, 'r', encoding='utf-8') as src_file, open(trg_path, 'r', encoding='utf-8') as trg_file:
-            rdr_src = csv.reader(src_file)
-            rdr_trg = csv.reader(trg_path)
-            for src_line, trg_line in zip(rdr_src, rdr_trg):
-                self.source.append(src_line)
-                self.target.append(trg_line)
-
-            print('source dataset 1, ')
-            print(self.source[1])
-            print('target dataset 1, ')
-            print(self.target[1])
+        # src_path = self.data + '.src.csv'
+        # trg_path = self.data + '.trg.csv'
+        #
+        # with open(src_path, 'r', encoding='utf-8') as src_file, open(trg_path, 'r', encoding='utf-8') as trg_file:
+        #     rdr_src = csv.reader(src_file)
+        #     rdr_trg = csv.reader(trg_file)
+        #     for src_line, trg_line in zip(rdr_src, rdr_trg):
+        #         self.source.append(src_line)
+        #         self.target.append(trg_line)
+        #
+        #     print('source dataset 1, ')
+        #     print(self.source[1])
+        #     print('target dataset 1, ')
+        #     print(self.target[1])
 
     def __len__(self):
         return len(self.data)
@@ -78,8 +81,9 @@ class NewsSummaryDataset(Dataset):
 class NewsSummaryDataModule(pl.LightningDataModule):
     def __init__(
             self,
-            train,
-            test,
+            # train,
+            # test,
+            path,
             model_name,
             batch_size: int = 64,
             text_max_token_len: int = 4096,
@@ -88,24 +92,49 @@ class NewsSummaryDataModule(pl.LightningDataModule):
 
         super().__init__()
 
-        self.train = train
-        self.test = test
+        # self.train = train
+        # self.test = test
         self.tokenizer = PegasusTokenizer.from_pretrained(model_name)
         self.batch_size = batch_size
         self.text_max_token_len = text_max_token_len
         self.summary_max_token_len = summary_max_token_len
 
-    def setup(self, stage=None):
+        f = open(path, 'r', encoding='utf-8')
+        rdr = csv.reader(f)
 
+        content = []
+        summary = []
+
+        for line in rdr:
+            if len(line) == 5:
+                content.append(line[2])
+                summary.append(line[3])
+        f.close()
+        X_train, X_test, y_train, y_test = train_test_split(content, summary, test_size=0.2)
+
+        self.X_train = X_train
+        self.y_train = y_train
+        self.X_test = X_test
+        self.y_test = y_test
+
+        print(self.X_train[1])
+        print(self.y_train[1])
+
+
+    def setup(self, stage=None):
         self.train_dataset = NewsSummaryDataset(
-            self.train,
+            # self.train,
+            self.X_train,
+            self.y_train,
             self.tokenizer,
             self.text_max_token_len,
             self.summary_max_token_len
         )
 
         self.test_dataset = NewsSummaryDataset(
-            self.test,
+            # self.test,
+            self.X_test,
+            self.y_test,
             self.tokenizer,
             self.text_max_token_len,
             self.summary_max_token_len
