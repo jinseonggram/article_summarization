@@ -145,7 +145,7 @@ toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
 
 
-N_EPOCHS = 5
+N_EPOCHS = 8
 BATCH_SIZE = 8
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
@@ -218,7 +218,7 @@ class NewsSummaryModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return AdamW(self.parameters(), lr=0.0001)
+        return AdamW(self.parameters(), lr=0.00001)
 
 model = NewsSummaryModel()
 
