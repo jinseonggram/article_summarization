@@ -139,14 +139,12 @@ class NewsSummaryDataModule(pl.LightningDataModule):
         )
 
 
-MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
-
-toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
-
+MODEL_NAME = "t5-base"
+toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
 
 
 N_EPOCHS = 8
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
 
