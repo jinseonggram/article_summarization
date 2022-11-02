@@ -146,7 +146,7 @@ toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
 
 N_EPOCHS = 8
-BATCH_SIZE = 8
+BATCH_SIZE = 4
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
 
