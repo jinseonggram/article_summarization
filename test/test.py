@@ -21,7 +21,7 @@ from tqdm.auto import tqdm
 
 pl.seed_everything(42)
 
-df = pd.read_csv('news_summary.csv', encoding="latin-1")
+df = pd.read_csv('./data/news_summary.csv', encoding="latin-1")
 
 df.columns = ["summary", "text"]
 df = df.dropna()
