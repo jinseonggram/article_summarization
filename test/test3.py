@@ -235,7 +235,7 @@ trainer = pl.Trainer(
     callbacks=[checkpoint_callback],
     accelerator='gpu',
     devices=[0,1,2,3],
-    strategy='ddp',
+    strategy='dp',
     max_epochs=N_EPOCHS,
 )
 
