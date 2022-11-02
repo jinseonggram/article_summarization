@@ -20,7 +20,7 @@ from tqdm.auto import tqdm
 from transformers import BartTokenizer, BartForConditionalGeneration
 
 pl.seed_everything(42)
-torch.cuda.empth_cache()
+torch.cuda.empty_cache()
 df = pd.read_csv('./data/news_summary.csv', encoding="latin-1")
 
 df = df[["text", "ctext"]]
