@@ -26,7 +26,8 @@ class MyTrainer:
             # devices=1,
             gpus=1,
             max_epochs=self.config.n_epochs,
-            num_sanity_val_steps=0
+            num_sanity_val_steps=0,
+            early_stop_callback=None
         )
         print('----- start training -----')
         trainer.fit(model, data_module)
