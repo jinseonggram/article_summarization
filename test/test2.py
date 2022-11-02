@@ -83,7 +83,7 @@ class NewsSummaryDataset(Dataset):
             labels_attention_mask=summary_encoding["attention_mask"].flatten()
         )
 
-class NewsSummaryDataModule(pl.LightningModule):
+class NewsSummaryDataModule(pl.LightningDataModule):
 
     def __init__(
             self,
@@ -146,7 +146,7 @@ BATCH_SIZE = 8
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
 
-class NewsSummaryModel(pl.LightningDataModule):
+class NewsSummaryModel(pl.LightningModule):
 
     def __init__(self):
         super().__init__()
