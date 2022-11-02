@@ -10,22 +10,21 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from sklearn.model_selection import train_test_split
 import textwrap
-
+import torch
 from transformers import (
     AdamW,
     T5ForConditionalGeneration,
     T5TokenizerFast as T5Tokenizer
 )
-from transformers import PegasusTokenizer, BigBirdPegasusForConditionalGeneration
 from tqdm.auto import tqdm
-import torch
+from transformers import BartTokenizer, BartForConditionalGeneration
 
-torch.cuda.empty_cache()
 pl.seed_everything(42)
-
+torch.cuda.empty_cache()
 df = pd.read_csv('./data/news_summary.csv', encoding="latin-1")
 
 df = df[["text", "ctext"]]
+
 df.columns = ["summary", "text"]
 df = df.dropna()
 
@@ -85,14 +84,13 @@ class NewsSummaryDataset(Dataset):
             labels_attention_mask=summary_encoding["attention_mask"].flatten()
         )
 
-
 class NewsSummaryDataModule(pl.LightningDataModule):
 
     def __init__(
             self,
             train_df: pd.DataFrame,
             test_df: pd.DataFrame,
-            tokenizer: PegasusTokenizer,
+            tokenizer: T5Tokenizer,
             batch_size: int = 8,
             text_max_token_len: int = 512,
             summary_max_token_len: int = 128
@@ -140,23 +138,21 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             num_workers=2
         )
 
-
 MODEL_NAME = "t5-base"
 toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
-
+# MODEL_NAME = "facebook/bart-large-cnn"
+# toekenizer = BartTokenizer.from_pretrained(MODEL_NAME)
 
 N_EPOCHS = 8
 BATCH_SIZE = 4
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
-
-
 class NewsSummaryModel(pl.LightningModule):
 
     def __init__(self):
         super().__init__()
-        self.model = BigBirdPegasusForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
         # self.model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
+        self.model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
 
