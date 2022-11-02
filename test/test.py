@@ -127,7 +127,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             self.train_dataset,
             batch_size=self.batch_size,
             shuffle=True,
-            num_workers=2
+            num_workers=8
         )
 
     def val_dataloader(self):
@@ -135,7 +135,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             self.test_dataset,
             batch_size=self.batch_size,
             shuffle=False,
-            num_workers=2
+            num_workers=8
         )
 
 
