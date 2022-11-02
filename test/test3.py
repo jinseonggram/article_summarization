@@ -38,7 +38,7 @@ class NewsSummaryDataset(Dataset):
             data: pd.DataFrame,
             tokenizer: T5Tokenizer,
             text_max_token_len: int = 2048,
-            summary_max_token_len: int = 512
+            summary_max_token_len: int = 256
     ):
         self.tokenizer = tokenizer
         self.data = data
@@ -94,7 +94,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             tokenizer: T5Tokenizer,
             batch_size: int = 8,
             text_max_token_len: int = 2048,
-            summary_max_token_len: int = 512
+            summary_max_token_len: int = 256
     ):
 
         super().__init__()
