@@ -23,6 +23,7 @@ pl.seed_everything(42)
 
 df = pd.read_csv('./data/news_summary.csv', encoding="latin-1")
 
+df = df[["text", "ctext"]]
 df.columns = ["summary", "text"]
 df = df.dropna()
 
