@@ -37,7 +37,7 @@ class NewsSummaryDataset(Dataset):
             self,
             data: pd.DataFrame,
             tokenizer: T5Tokenizer,
-            text_max_token_len: int = 1200,
+            text_max_token_len: int = 1024,
             summary_max_token_len: int = 128
     ):
         self.tokenizer = tokenizer
@@ -93,7 +93,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             test_df: pd.DataFrame,
             tokenizer: T5Tokenizer,
             batch_size: int = 8,
-            text_max_token_len: int = 1200,
+            text_max_token_len: int = 1024,
             summary_max_token_len: int = 128
     ):
 
@@ -145,7 +145,7 @@ MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
 toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
 N_EPOCHS = 8
-BATCH_SIZE = 2
+BATCH_SIZE = 4
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
 class NewsSummaryModel(pl.LightningModule):
