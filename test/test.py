@@ -18,7 +18,9 @@ from transformers import (
 )
 from transformers import PegasusTokenizer, BigBirdPegasusForConditionalGeneration
 from tqdm.auto import tqdm
+import torch
 
+torch.cuda.empty_cache()
 pl.seed_everything(42)
 
 df = pd.read_csv('./data/news_summary.csv', encoding="latin-1")
@@ -144,7 +146,7 @@ toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
 
 
 N_EPOCHS = 8
-BATCH_SIZE = 8
+BATCH_SIZE = 4
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
 
