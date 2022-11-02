@@ -159,7 +159,8 @@ class NewsSummaryModel(pl.LightningModule):
     def __init__(self):
         super().__init__()
         # self.model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
-        self.model = BigBirdPegasusForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
+        # self.model = BigBirdPegasusForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
+        self.model = BartForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
 
