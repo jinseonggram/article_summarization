@@ -146,7 +146,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
 # toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
 MODEL_NAME = "sshleifer/distilbart-cnn-6-6"
-toekenizer = BartForConditionalGeneration.from_pretrained(MODEL_NAME)
+toekenizer = BartTokenizer.from_pretrained(MODEL_NAME)
 
 N_EPOCHS = 8
 BATCH_SIZE = 4
