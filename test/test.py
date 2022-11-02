@@ -35,8 +35,8 @@ class NewsSummaryDataset(Dataset):
             self,
             data: pd.DataFrame,
             tokenizer: T5Tokenizer,
-            text_max_token_len: int = 2048,
-            summary_max_token_len: int = 512
+            text_max_token_len: int = 512,
+            summary_max_token_len: int = 128
     ):
         self.tokenizer = tokenizer
         self.data = data
@@ -92,8 +92,8 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             test_df: pd.DataFrame,
             tokenizer: PegasusTokenizer,
             batch_size: int = 8,
-            text_max_token_len: int = 2048,
-            summary_max_token_len: int = 512
+            text_max_token_len: int = 512,
+            summary_max_token_len: int = 128
     ):
 
         super().__init__()
@@ -127,7 +127,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             self.train_dataset,
             batch_size=self.batch_size,
             shuffle=True,
-            num_workers=8
+            num_workers=2
         )
 
     def val_dataloader(self):
@@ -135,7 +135,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             self.test_dataset,
             batch_size=self.batch_size,
             shuffle=False,
-            num_workers=8
+            num_workers=2
         )
 
 
@@ -146,7 +146,7 @@ toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
 
 N_EPOCHS = 8
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 
 data_module = NewsSummaryDataModule(train_df, test_df, toekenizer, batch_size=BATCH_SIZE)
 
