@@ -19,6 +19,7 @@ from transformers import (
 from tqdm.auto import tqdm
 # from transformers import BartTokenizer, BartForConditionalGeneration
 from transformers import PegasusTokenizer, BigBirdPegasusForConditionalGeneration
+from transformers import BartTokenizer, BartForConditionalGeneration
 
 pl.seed_everything(42)
 torch.cuda.empty_cache()
@@ -38,7 +39,7 @@ class NewsSummaryDataset(Dataset):
             data: pd.DataFrame,
             tokenizer: T5Tokenizer,
             text_max_token_len: int = 2048,
-            summary_max_token_len: int = 128
+            summary_max_token_len: int = 256
     ):
         self.tokenizer = tokenizer
         self.data = data
@@ -94,7 +95,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             tokenizer: T5Tokenizer,
             batch_size: int = 8,
             text_max_token_len: int = 2048,
-            summary_max_token_len: int = 128
+            summary_max_token_len: int = 256
     ):
 
         super().__init__()
@@ -141,8 +142,11 @@ class NewsSummaryDataModule(pl.LightningDataModule):
 
 # MODEL_NAME = "t5-base"
 # toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
-MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
-toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
+# MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
+# toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
+
+MODEL_NAME = "sshleifer/distilbart-cnn-6-6"
+toekenizer = BartForConditionalGeneration.from_pretrained(MODEL_NAME)
 
 N_EPOCHS = 8
 BATCH_SIZE = 4
