@@ -36,7 +36,7 @@ class NewsSummaryDataset(Dataset):
             self,
             data: pd.DataFrame,
             tokenizer: T5Tokenizer,
-            text_max_token_len: int = 1048,
+            text_max_token_len: int = 512,
             summary_max_token_len: int = 128
     ):
         self.tokenizer = tokenizer
@@ -92,7 +92,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             test_df: pd.DataFrame,
             tokenizer: T5Tokenizer,
             batch_size: int = 8,
-            text_max_token_len: int = 1048,
+            text_max_token_len: int = 512,
             summary_max_token_len: int = 128
     ):
 
@@ -233,7 +233,7 @@ logger = TensorBoardLogger('lightning_logs', name='news-summary')
 trainer = pl.Trainer(
     logger=logger,
     callbacks=[checkpoint_callback],
-    gpus=4,
+    gpus=1,
     max_epochs=N_EPOCHS,
 )
 
