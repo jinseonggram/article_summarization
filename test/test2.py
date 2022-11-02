@@ -17,6 +17,7 @@ from transformers import (
     T5TokenizerFast as T5Tokenizer
 )
 from tqdm.auto import tqdm
+from transformers import PegasusTokenizer, BigBirdPegasusForConditionalGeneration
 
 pl.seed_everything(42)
 
@@ -137,9 +138,10 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             num_workers=2
         )
 
-MODEL_NAME = "t5-base"
-
-toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
+# MODEL_NAME = "t5-base"
+# toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
+MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
+toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
 N_EPOCHS = 3
 BATCH_SIZE = 8
@@ -150,7 +152,8 @@ class NewsSummaryModel(pl.LightningModule):
 
     def __init__(self):
         super().__init__()
-        self.model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
+        # self.model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
+        self.model = BigBirdPegasusForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
 
