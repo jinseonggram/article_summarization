@@ -145,7 +145,8 @@ class NewsSummaryDataModule(pl.LightningDataModule):
 # MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
 # toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
-MODEL_NAME = "sshleifer/distilbart-cnn-6-6"
+# MODEL_NAME = "sshleifer/distilbart-cnn-6-6"
+MODEL_NAME = 'facebook/bart-large-cnn'
 toekenizer = BartTokenizer.from_pretrained(MODEL_NAME)
 
 N_EPOCHS = 8
