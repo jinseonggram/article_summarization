@@ -229,10 +229,9 @@ logger = TensorBoardLogger('lightning_logs', name='news-summary')
 
 trainer = pl.Trainer(
     logger=logger,
-    checkpoint_callback=checkpoint_callback,
+    callbacks=[checkpoint_callback],
     gpus=1,
     max_epochs=N_EPOCHS,
-    progress_bar_refresh_rate=30
 )
 
 
