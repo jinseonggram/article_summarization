@@ -108,7 +108,6 @@ def main(config):
     # save_model(pl_trainer)
 
 
-
 if __name__ == '__main__':
     config = define_argparser()
     main(config)
