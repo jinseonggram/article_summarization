@@ -10,7 +10,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from sklearn.model_selection import train_test_split
 import textwrap
-
+import torch
 from transformers import (
     AdamW,
     T5ForConditionalGeneration,
@@ -20,7 +20,7 @@ from tqdm.auto import tqdm
 from transformers import BartTokenizer, BartForConditionalGeneration
 
 pl.seed_everything(42)
-
+torch.cuda.empth_cache()
 df = pd.read_csv('./data/news_summary.csv', encoding="latin-1")
 
 df = df[["text", "ctext"]]
