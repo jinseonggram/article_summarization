@@ -151,8 +151,8 @@ BATCH_SIZE = 4
 
 # 데이터
 raw_datasets = load_dataset('cnn_dailymail', '3.0.0')
-raw_train = raw_datasets['train'][:120000]
-raw_valid = raw_datasets['validation'][:30000]
+raw_train = raw_datasets['train'][:30000]
+raw_valid = raw_datasets['validation'][:5000]
 
 train = {'text': [], 'summarization': []}
 valid = {'text': [], 'summarization': []}
@@ -164,7 +164,7 @@ for text, summarization in zip(raw_train['article'], raw_train['highlights']):
 
 
 for text, summarization in zip(raw_valid['article'], raw_valid['highlights']):
-    if len(toekenizer.encode(text)) < 1024 and len(toekenizer.encode(summarization)):
+    if len(toekenizer.encode(text)) < 1200 and len(toekenizer.encode(summarization)) < 300:
         valid['text'].append(text)
         valid['summarization'].append(text)
 
