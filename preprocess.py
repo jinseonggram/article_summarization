@@ -45,8 +45,8 @@ def preprocessing(args):
 
 
 def save_csv(path, text):
-    f = open(path, 'w', newline='')
-    writer = csv.writer(f)
+    f = open(path, 'w')
+    writer = csv.writer(f, delimiter = ",", quotechar = '"', quoting = csv.QUOTE_ALL)
     writer.writerows([text])
     f.close()
 

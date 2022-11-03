@@ -1,25 +1,11 @@
-import json
-import pandas
-import numpy as np
-from pathlib import Path
-
 import pandas as pd
 from torch.utils.data import DataLoader, Dataset
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from sklearn.model_selection import train_test_split
-import textwrap
 import torch
-from transformers import (
-    AdamW,
-    T5ForConditionalGeneration,
-    T5TokenizerFast as T5Tokenizer
-)
-from tqdm.auto import tqdm
-# from transformers import BartTokenizer, BartForConditionalGeneration
-from transformers import PegasusTokenizer, BigBirdPegasusForConditionalGeneration
-from transformers import BartTokenizer, BartForConditionalGeneration
+from transformers import BartTokenizer, BartForConditionalGeneration, AdamW
 
 pl.seed_everything(42)
 torch.cuda.empty_cache()
@@ -32,12 +18,13 @@ df = df.dropna()
 
 train_df, test_df = train_test_split(df, test_size=0.1)
 
+
 class NewsSummaryDataset(Dataset):
 
     def __init__(
             self,
             data: pd.DataFrame,
-            tokenizer: T5Tokenizer,
+            tokenizer: BartTokenizer,
             text_max_token_len: int = 1024,
             summary_max_token_len: int = 256
     ):
@@ -86,18 +73,18 @@ class NewsSummaryDataset(Dataset):
             labels_attention_mask=summary_encoding["attention_mask"].flatten()
         )
 
+
 class NewsSummaryDataModule(pl.LightningDataModule):
 
     def __init__(
             self,
             train_df: pd.DataFrame,
             test_df: pd.DataFrame,
-            tokenizer: T5Tokenizer,
+            tokenizer: BartTokenizer,
             batch_size: int = 8,
             text_max_token_len: int = 1024,
             summary_max_token_len: int = 256
     ):
-
         super().__init__()
 
         self.train_df = train_df
@@ -107,7 +94,6 @@ class NewsSummaryDataModule(pl.LightningDataModule):
         self.tokenizer = tokenizer
         self.text_max_token_len = text_max_token_len
         self.summary_max_token_len = summary_max_token_len
-
 
     def setup(self, stage=None):
         self.train_dataset = NewsSummaryDataset(
@@ -140,12 +126,7 @@ class NewsSummaryDataModule(pl.LightningDataModule):
             num_workers=8
         )
 
-# MODEL_NAME = "t5-base"
-# toekenizer = T5Tokenizer.from_pretrained(MODEL_NAME)
-# MODEL_NAME = "google/bigbird-pegasus-large-arxiv"
-# toekenizer = PegasusTokenizer.from_pretrained(MODEL_NAME)
 
-# MODEL_NAME = "sshleifer/distilbart-cnn-6-6"
 MODEL_NAME = 'facebook/bart-large-cnn'
 toekenizer = BartTokenizer.from_pretrained(MODEL_NAME)
 
@@ -159,12 +140,9 @@ class NewsSummaryModel(pl.LightningModule):
 
     def __init__(self):
         super().__init__()
-        # self.model = T5ForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
-        # self.model = BigBirdPegasusForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
         self.model = BartForConditionalGeneration.from_pretrained(MODEL_NAME, return_dict=True)
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
-
         output = self.model(
             input_ids,
             attention_mask=attention_mask,
@@ -225,6 +203,7 @@ class NewsSummaryModel(pl.LightningModule):
     def configure_optimizers(self):
         return AdamW(self.parameters(), lr=0.00001)
 
+
 model = NewsSummaryModel()
 
 checkpoint_callback = ModelCheckpoint(
@@ -242,11 +221,10 @@ trainer = pl.Trainer(
     logger=logger,
     callbacks=[checkpoint_callback],
     accelerator='gpu',
-    devices=[0,1,2,3],
+    devices=[0, 1, 2, 3],
     strategy='dp',
     num_nodes=4,
     max_epochs=N_EPOCHS,
 )
-
 
 trainer.fit(model, data_module)
